@@ -27,8 +27,8 @@ defmodule OpenAI.Config do
   end
 
   # API Key
-  def api_key, do: get_config_value(:api_key)
-  def org_key, do: get_config_value(:organization_key)
+  def api_key, do: "" #get_config_value(:api_key)
+  def org_key, do: "" #get_config_value(:organization_key)
 
   # API Url
   def api_url, do: @openai_url

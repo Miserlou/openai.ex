@@ -25,35 +25,35 @@ defmodule OpenAI.Client do
     end
   end
 
-  def add_organization_header(headers) do
-    if Config.org_key() do
-      [{"OpenAI-Organization", Config.org_key()} | headers]
+  def add_organization_header(headers, config) do
+    if Map.has_key?(config, :org_key) do
+      [{"OpenAI-Organization", config[:org_key]} | headers]
     else
       headers
     end
   end
 
-  def request_headers do
+  def request_headers(config) do
     [
-      bearer(),
+      bearer(config),
       {"Content-type", "application/json"}
     ]
-    |> add_organization_header()
+    |> add_organization_header(config)
   end
 
-  def bearer(), do: {"Authorization", "Bearer #{Config.api_key()}"}
+  def bearer(config), do: {"Authorization", "Bearer #{config[:api_key]}"}
 
   def request_options(), do: Config.http_options()
 
-  def api_get(url, request_options \\ []) do
+  def api_get(url, custom_config, request_options \\ []) do
     request_options = Keyword.merge(request_options(), request_options)
 
     url
-    |> get(request_headers(), request_options)
+    |> get(request_headers(custom_config), request_options)
     |> handle_response()
   end
 
-  def api_post(url, params \\ [], request_options \\ []) do
+  def api_post(url, custom_config, params \\ [], request_options \\ []) do
     body =
       params
       |> Enum.into(%{})
@@ -63,11 +63,11 @@ defmodule OpenAI.Client do
     request_options = Keyword.merge(request_options(), request_options)
 
     url
-    |> post(body, request_headers(), request_options)
+    |> post(body, request_headers(custom_config), request_options)
     |> handle_response()
   end
 
-  def multipart_api_post(url, file_path, file_param, params, request_options \\ []) do
+  def multipart_api_post(url, config, file_path, file_param, params, request_options \\ []) do
     body_params = params |> Enum.map(fn {k, v} -> {Atom.to_string(k), v} end)
 
     body = {
@@ -81,15 +81,15 @@ defmodule OpenAI.Client do
     request_options = Keyword.merge(request_options(), request_options)
 
     url
-    |> post(body, request_headers(), request_options)
+    |> post(body, request_headers(config), request_options)
     |> handle_response()
   end
 
-  def api_delete(url, request_options \\ []) do
+  def api_delete(url, custom_config, request_options \\ []) do
     request_options = Keyword.merge(request_options(), request_options)
 
     url
-    |> delete(request_headers(), request_options)
+    |> delete(request_headers(custom_config), request_options)
     |> handle_response()
   end
 end

@@ -6,8 +6,8 @@ defmodule OpenAI.Edits do
 
   def url(), do: @edits_base_url
 
-  def fetch(params) do
+  def fetch(params, custom_config) do
     url()
-    |> Client.api_post(params)
+    |> Client.api_post(params, custom_config)
   end
 end

@@ -6,8 +6,8 @@ defmodule OpenAI.Images.Generations do
 
   def url(), do: @base_url
 
-  def fetch(params, request_options \\ []) do
+  def fetch(custom_config, params, request_options \\ []) do
     url()
-    |> Client.api_post(params, request_options)
+    |> Client.api_post(custom_config, params, request_options)
   end
 end
