@@ -201,8 +201,8 @@ defmodule OpenAI do
 
   See: https://platform.openai.com/docs/api-reference/chat/create for the complete list of parameters you can pass to the completions function
   """
-  def chat_completion(params) do
-    Chat.fetch(params)
+  def chat_completion(config, params) do
+    Chat.fetch(config, params)
   end
 
   @doc """
