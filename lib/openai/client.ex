@@ -53,7 +53,7 @@ defmodule OpenAI.Client do
     |> handle_response()
   end
 
-  def api_post(url, custom_config, params \\ [], request_options \\ []) do
+  def api_post(url, custom_config, params \\ [], request_options \\ [recv_timeout: 60_000, timeout: 60_000]) do
     body =
       params
       |> Enum.into(%{})
